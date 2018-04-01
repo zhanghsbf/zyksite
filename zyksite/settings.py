@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'awvx+#30n*v*fq1hk#xo&p3xyrufq9@fpo3qo(ka=+v$vhuj$t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,16 +77,17 @@ WSGI_APPLICATION = 'zyksite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zyksite',
-        'HOST': '',
-        'PORT': '3306',
-        'USER': 'zyksite',
-        'PASSWORD': '123456',
-    }
-}
+DATABASES['default'] = dj_database_url.config()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'zyksite',
+#         'HOST': '',
+#         'PORT': '3306',
+#         'USER': 'zyksite',
+#         'PASSWORD': '123456',
+#     }
+# }
 
 
 # Internationalization
@@ -104,7 +106,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
                     os.path.join(BASE_DIR, 'static'),
@@ -116,8 +118,8 @@ STATICFILES_DIRS = [
 # EMAIL_USE_SSL = True
 EMAIL_HOST = "smtp.sina.com"
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'xiaozhangchiren@sina.com'
-EMAIL_HOST_PASSWORD = 'zyk5263901'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_SUBJECT_PREFIX = '[Blogger]'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
