@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Blogger - Write{% endblock %}
+
+{% block content %}
+	{% for message in messages %}
+	<div class="alert">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+  		<strong>{{message.tags}}!</strong> {{ message }}
+	</div>
+	<script type="text/javascript">
+		$(".alert").alert()
+	</script>
+	{% endfor %}
+
+
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-header">
+				<h3>{{ post.title }}</h3>
+			</div>
+			<div class="panel-body">
+				<p>{{ post.body }}</p>
+			</div>
+			<div class="panel-footer">
+				<p>作者:{{ post}}&nbsp;&nbsp;&nbsp;发布于:{{ post.pub_date }}</p>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="panel">
+			<form action="." method='POST'>
+				{% csrf_token %}
+				<table>
+					{{ comment_form.as_table }}
+				</table>
+				<input type="submit" value="发布">
+			</form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Zlog - 撰写{% endblock %}
+
+{% block content %}
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<form role="form" action="." method="POST" enctype='multipart/form-data'>
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="post_title">随笔-标题</label>
+				<input type="text" name="title" class="form-control" id="post_title" placeholder="这里输入标题...">
+			</div>
+			<div class="form-group">
+				<label for="post_body">随笔-内容</label>
+				<textarea class="form-control" rows="3" id="post_body" name="body" placeholder="你想写点什么..."></textarea>
+			</div>
+			<div class="form-group">
+				<label for="post_photo1">图片1</label>
+				<input type="file" id="post_photo1" name="photo1">
+			</div>
+			<div class="form-group">
+				<label for="post_photo2">图片2</label>
+				<input type="file" id="post_photo2" name="photo2">
+			</div>
+			<div class="form-group">
+				<label for="post_photo3">图片3</label>
+				<input type="file" id="post_photo3" name="photo3">
+			</div>
+			
+			<button type="submit" class="btn btn-default">发布</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

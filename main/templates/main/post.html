@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Zlog - 撰写{% endblock %}
+
+{% block content %}
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<div class="left">{{ post.title }}</div>
+					<div class="right">
+						<a class="aa" href="{% url 'yonghu:profile' post.user.id %}">
+							<img class="post-head" src="{{post.user.profile.head_cut.url}}">
+						</a>
+							{{ post.user.profile.nickname }}
+					</div>
+					<div class="row clearfix">
+				</h3>
+			</div>
+			<div class="panel-body bg-post">
+				{{ post.body }}<br>
+			</div>
+			<div class="panel-body bg-post">
+				{% if post.photo1 %}
+				<img class="img-rounded post-img" src="{{ post.photo1.url }}">
+				{% endif %}
+				{% if post.photo2 %}
+				<img class="img-rounded post-img" src="{{ post.photo2.url }}">
+				{% endif %}
+				{% if post.photo3 %}
+				<img class="img-rounded post-img" src="{{ post.photo3.url }}">
+				{% endif %}	
+			</div>
+			<div class="panel-footer" align="right">
+				{{ post.pub_date }} &nbsp;&nbsp;
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					评论
+				</h3>
+			</div>
+			<div class="panel-body">
+				{% if username %}
+				<div class="content-form">
+					<form action="." method="POST">
+						{% csrf_token %}
+					<!-- <input type="text" placeholder="Name" required/>
+					<input type="text" placeholder="E-mail" required/>
+					<input type="text" placeholder="Phone" required/>
+					<textarea placeholder="Message"></textarea> -->
+						{{ comment_form.as_table }}
+						<input type="submit" value="提交"/>
+					</form>
+				</div>
+				{% endif %}
+			</div>
+			<div class="panel-footer">
+				<ul class="pagination">
+					{% if not is_first_page %}
+					<li><a href="?page=1">Top</a></li>
+					<li><a href="?page={{prev_page}}">Prev</a></li>
+					{% endif %}
+					<li><a href="#">{{page}}</a></li>
+					{% if not is_last_page %}
+					<li><a href="?page={{next_page}}">Next</a></li>
+					<li><a href="?page={{total_page}}">end</a></li>
+					{% endif %}
+				</ul>
+				{% for comment in comments %}
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<div class="left">
+								<a class="aa" href="{% url 'yonghu:profile' post.user.id %}">
+									<img class="post-head" src="{{comment.user.profile.head_cut.url}}">
+								</a>
+									{{ comment.user.profile.nickname }}
+							</div>
+							<div class="right">{{ comment.pub_date }}</div>
+							<div class="row clearfix">
+						</h3>
+					</div>
+					<div class="panel-body bg-post">
+						{{ comment.body }}
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

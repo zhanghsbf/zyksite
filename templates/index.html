@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Zblog{% endblock %}
+
+
+
+{% block head %}
+<div class="jumbotron">
+	{% if username %}
+	<h2>
+		{{ username }},你来了...
+	</h2>
+	<p>
+		最近过得怎么样?
+	</p>
+	{% else %}
+	<h2>
+		这有一个试用账号...
+	</h2>
+	<p>
+		账号：john   密码: cat
+	</p>
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="tabbable" id="tabs-547091">
+			<ul class="nav nav-tabs">
+				<li class="active">
+					 <a href="#panel-213563" data-toggle="tab">世界</a>
+				</li>
+				{% if username %}
+				<li>
+					 <a href="#panel-587743" data-toggle="tab">朋友</a>
+				</li>
+				{% endif %}
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="panel-213563">
+					<!-- section1 的内容 -->
+					{% for post in posts %}
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<div class="left">
+									<a class="aa" href="{% url 'main:post' post.id %}">{{ post.title }}</a>
+								</div>
+								<div class="right">
+									<a class="aa" href="{% url 'yonghu:profile' post.user.id %}">
+										<img class="post-head" src="{{post.user.profile.head_cut.url}}">
+									</a>
+										{{ post.user.profile.nickname }}
+								</div>
+								<div class="row clearfix">
+							</h3>
+						</div>
+						<div class="panel-body bg-post">
+							{{ post.body | truncatechars:100}}<br>
+							<span><a href="{% url 'main:post' post.id %}">更多...</a></span>
+						</div>
+						<div class="panel-body bg-post">
+							{% if post.photo1 %}
+							<img class="img-rounded post-img" src="{{ post.photo1.url }}">
+							{% endif %}
+							{% if post.photo2 %}
+							<img class="img-rounded post-img" src="{{ post.photo2.url }}">
+							{% endif %}
+							{% if post.photo3 %}
+							<img class="img-rounded post-img" src="{{ post.photo3.url }}">
+							{% endif %}	
+						</div>
+						<div class="panel-footer" align="right">
+							{{ post.pub_date }} &nbsp;&nbsp;
+							评论：
+							<a class="aa" href="{% url 'main:post' post.id %}">
+								<span class="badge badge-success">{{ post.comment_set.count | default:0 }}</span> 
+							</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+					</div>
+					{% endfor %}
+					<ul class="pagination">
+						{% if not is_first_page %}
+						<li><a href="?page=1">Top</a></li>
+						<li><a href="?page={{prev_page}}">Prev</a></li>
+						{% endif %}
+						<li><a href="#">{{page}}</a></li>
+						{% if not is_last_page %}
+						<li><a href="?page={{next_page}}">Next</a></li>
+						<li><a href="?page={{total_page}}">end</a></li>
+						{% endif %}
+					</ul>
+				</div>
+
+
+				<div class="tab-pane" id="panel-587743">
+					{% for post in follow_posts %}
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<div class="left">
+									<a class="aa" href="{% url 'main:post' post.id %}">{{ post.title }}</a>
+								</div>
+								<div class="right">
+									<a class="aa" href="{% url 'yonghu:profile' post.user.id %}">
+										<img class="post-head" src="{{post.user.profile.head_cut.url}}">
+									</a>
+										{{ post.user.profile.nickname }}
+								</div>
+								<div class="row clearfix">
+							</h3>
+						</div>
+						<div class="panel-body bg-post">
+							{{ post.body | truncatechars:100}}<br>
+						</div>
+						<div class="panel-body bg-post">
+							{% if post.photo1 %}
+							<img class="img-rounded post-img" src="{{ post.photo1.url }}">
+							{% endif %}
+							{% if post.photo2 %}
+							<img class="img-rounded post-img" src="{{ post.photo2.url }}">
+							{% endif %}
+							{% if post.photo3 %}
+							<img class="img-rounded post-img" src="{{ post.photo3.url }}">
+							{% endif %}	
+						</div>
+						<div class="panel-footer" align="right">
+							{{ post.pub_date }} &nbsp;&nbsp;
+							评论：
+							<a class="aa" href="{% url 'main:post' post.id %}">
+								<span class="badge badge-success">{{ post.comment_set.count | default:0 }}</span> 
+							</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+					</div>
+					{% empty %}
+					<div class="panel">
+						<div class="panel-body">
+							你还没有关注任何人，快去关注一些吧!
+						</div>
+					</div>
+					{% endfor %}
+					<ul class="pagination">
+						{% if not is_first_page %}
+						<li><a href="?page=1">Top</a></li>
+						<li><a href="?page={{prev_page}}">Prev</a></li>
+						{% endif %}
+						<li><a href="#">{{page}}</a></li>
+						{% if not is_last_page %}
+						<li><a href="?page={{next_page}}">Next</a></li>
+						<li><a href="?page={{total_page}}">end</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

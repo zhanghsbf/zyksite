@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Zblog - 资料{% endblock %}
+
+{% block content %}
+
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					{{ profile.user.username }}
+				</h3>
+			</div>
+			<div class="panel-body head-cut">
+				头像: <img class="img-thumbnail" src="{{ profile.head_cut.url }}" />&nbsp;&nbsp;&nbsp;&nbsp;
+				{% if username %}
+				{% if not is_mine_profile %}
+					{% if i_followed_him %}
+					<a href="{% url 'yonghu:unfollow' user.id %}" class="btn btn-default">取消关注</a> 
+					{% else %}
+					<a href="{% url 'yonghu:follow' user.id %}" class="btn btn-primary">关注</a>
+					{% endif %}
+					{% if he_is_my_fan %}
+					<button type="button" class="btn btn-info">关注了你</button>
+					{% endif %}
+				{% endif %}
+				{% endif %}
+				<br>
+				昵称: {{ profile.nickname }}<br>
+				年龄: {{ profile.age | default:'芳龄未知' }}<br>
+				性别: {% if profile.is_boy %}男{% else %}女{% endif %} <br>
+				个人宣言: {{ profile.note | default:'什么都没写，他想要平静的生活...' }}<br>
+			 	<a id='follow' href="{% url 'yonghu:follows_page' user.id %}"> 
+					<button class="btn btn-primary" type="button">关注
+				  		<span class="badge">{{follows.count | default:0 }}</span>
+					</button>
+				</a>
+				<a id='fan' href="{% url 'yonghu:fans_page' user.id %}"> 
+					<button class="btn btn-primary" type="button">粉丝
+						<span class="badge">{{fans.count | default:0}}</span>
+					</button>
+				</a>
+				<p><a href="{% url 'main:user_post' profile.user.id %}">他发布过的文章>>></a></p>
+				<p><a href="{% url 'main:user_comment' profile.user.id %}">他发布过的评论>>></a></p>
+
+			</div>
+			<!-- <div class="panel-footer">
+				Panel footer
+			</div> -->
+		</div>
+		{% if is_mine_profile %}
+		<form role="form" action="." method="POST" enctype='multipart/form-data'>
+			{% csrf_token %}
+			<div class="form-group">
+				{{ profile_form.as_p }}
+			</div>
+			<button type="submit" class="btn btn-default">提交</button>
+		</form>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

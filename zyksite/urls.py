@@ -15,7 +15,23 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from yonghu.views import login, logout, login_required_transfer
+from main.views import index, page_not_found
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^user/', include('yonghu.urls', namespace='yonghu')),
+    url(r'^login/', login, name='login'),
+    url(r'^$', index, name='index'),
+    url(r'^logout/', logout, name='logout'),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url(r'^main/', include('main.urls', namespace='main')),
+    url(r'^transfer/', login_required_transfer),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = page_not_found

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Zblog - 关注者{% endblock %}
+
+{% block content %}
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<span><img src="{{ user.profile.head_cut.url }}" class="img-thumbnail head-cut-img"></span>&nbsp;&nbsp;
+					{{ user.profile.nickname }}
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row clearfix">
+					<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>粉丝</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for fan in fans %}
+							<tr class="success">
+								<td>{{ forloop.counter }}</td>
+								<td>
+									<span><img src="{{ fan.fan.profile.head_cut.url }}" class="img-thumbnail head-cut-img"></span>&nbsp;&nbsp;
+									<a href="{% url 'yonghu:profile' fan.fan.id %}">{{ fan.fan.profile.nickname }}</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<ul class="pagination">
+						{% if not is_first_page %}
+						<li><a href="?page=1">Top</a></li>
+						<li><a href="?page={{prev_page}}">Prev</a></li>
+						{% endif %}
+						<li><a href="#">{{page}}</a></li>
+						{% if not is_last_page %}
+						<li><a href="?page={{next_page}}">Next</a></li>
+						<li><a href="?page={{total_page}}">end</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+{% endblock %}

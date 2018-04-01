@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Zblog - 登录{% endblock %}
+
+{% block content %}
+ 
+<h3>你访问的页面需要登录才能使用,<span id="time">5</span>秒钟自动跳到首页</h3>
+<script type="text/javascript">
+	$(function () {
+      setTimeout(ChangeTime, 1000);
+    });
+    function ChangeTime() {
+      var time;
+      time = $("#time").text();    
+      time = parseInt(time);
+      time--;
+      if (time <= 0) {
+        window.location.href = "{% url 'index' %}";
+      } else {
+        $("#time").text(time);
+        setTimeout(ChangeTime, 1000);
+      }
+    }
+</script>
+{% endblock %}

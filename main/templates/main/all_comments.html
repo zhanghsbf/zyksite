@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Zlog - 评论{% endblock %}
+
+{% block content %}
+<div class="row clearfix">
+	<div class="col-md-12 column">
+		{% for comment in comments %}
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<div class="left">
+						<a class="aa" href="{% url 'yonghu:profile' comment.user.id %}">
+							<img class="post-head" src="{{comment.user.profile.head_cut.url}}">
+						</a>
+							{{ comment.user.profile.nickname }}
+					</div>
+					<div class="right">{{ comment.pub_date }}</div>
+					<div class="row clearfix">
+				</h3>
+			</div>
+			<div class="panel-body bg-post">
+				{{ comment.body }}
+				<p>{{ comment.user.post.count }}</p>
+
+			</div>
+			<div class="panel-footer">
+				原文章: <a href="{% url 'main:post' comment.post.id %}">{{ comment.post.title }}</a>
+			</div>
+		</div>
+		{% empty %}
+		<div class="panel">
+			<div class="panel-body">
+				不要吝啬对他人的赞美，也不要放纵他人的过错...
+			</div>
+		</div>
+		{% endfor %}
+		<ul class="pagination">
+			{% if not is_first_page %}
+			<li><a href="?page=1">Top</a></li>
+			<li><a href="?page={{prev_page}}">Prev</a></li>
+			{% endif %}
+			<li><a href="#">{{page}}</a></li>
+			{% if not is_last_page %}
+			<li><a href="?page={{next_page}}">Next</a></li>
+			<li><a href="?page={{total_page}}">end</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+{% endblock %}
